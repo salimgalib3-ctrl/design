@@ -1,0 +1,173 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   SAEED BAOWZIR — DESIGN TOKENS
+   Tailwind CSS v4 theme. Warm charcoal + champagne gold.
+   ============================================================ */
+@theme {
+  /* Palette — 6 brief-specific tokens */
+  --color-noir: #0a0a0c;
+  --color-noir-800: #101012;
+  --color-espresso: #171310;
+  --color-porcelain: #f4efe6;
+  --color-porcelain-dim: #d9d2c5;
+  --color-champagne: #c9a86a;
+  --color-champagne-lift: #e7cf9a;
+  --color-gold-deep: #a07d3e;
+  --color-stone: #8a8175;
+  --color-stone-dim: #5a544b;
+
+  /* Type */
+  --font-display: 'Fraunces', ui-serif, Georgia, serif;
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+
+  /* Fluid display sizes */
+  --text-mega: clamp(3rem, 11vw, 11rem);
+  --text-hero: clamp(2.6rem, 7vw, 6.5rem);
+  --text-display: clamp(2rem, 4.6vw, 4rem);
+
+  /* Motion */
+  --ease-lux: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-veil: cubic-bezier(0.77, 0, 0.175, 1);
+
+  /* Elevation shadows tuned for dark canvas */
+  --shadow-lux: 0 40px 120px -40px rgba(0, 0, 0, 0.75);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-noir);
+    color: var(--color-porcelain);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    overflow-x: hidden;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+
+  ::selection {
+    background: var(--color-champagne);
+    color: var(--color-noir);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-champagne);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Custom scrollbar — restrained gold */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-noir);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2a2822;
+    border-radius: 99px;
+    border: 3px solid var(--color-noir);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gold-deep);
+  }
+}
+
+/* ============================================================
+   UTILITIES / PRIMITIVES
+   ============================================================ */
+@layer components {
+  .u-container {
+    width: 100%;
+    max-width: 84rem;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 5rem);
+  }
+
+  .u-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--color-champagne);
+  }
+
+  /* Champagne gradient text */
+  .u-gold-text {
+    background: linear-gradient(
+      92deg,
+      var(--color-champagne-lift) 0%,
+      var(--color-champagne) 45%,
+      var(--color-gold-deep) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Hairline divider */
+  .u-rule {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(201, 168, 106, 0.4),
+      transparent
+    );
+  }
+
+  /* Reveal primitives driven by Motion One (see useReveal) */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    will-change: transform, opacity;
+  }
+  [data-reveal-line] > * {
+    opacity: 0;
+    transform: translateY(115%);
+  }
+}
+
+/* Grain overlay to kill flat "AI gradient" feel */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   REDUCED MOTION — quality floor, non-negotiable
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  [data-reveal],
+  [data-reveal-line] > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
